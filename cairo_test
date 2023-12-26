@@ -120,3 +120,22 @@ func random_password{
     return (password,);
     }
   
+    @external
+ func random_hash{
+     syscall_ptr, bitwise_ptr, pedersen_ptr, range_check_ptr
+ }() -> (random_hash: felt) {
+     alloc_locals;
+
+     // Generate a random hash value (e.g., CRC32, Adler32, etc.).
+     let random_hash = xorshift32() ^ (xorshift32() << 13);
+
+     return (random_hash,);
+    }
+   
+    @external
+  func reset_seed_to_initial{
+    syscall_ptr, bitwise_ptr, pedersen_ptr, range_check_ptr
+  }() -> (success: felt) {
+   current_seed = SEED;
+    return (1,);  // Success
+    }
