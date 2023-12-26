@@ -57,3 +57,11 @@ func xorshift32() -> (random: felt) {
 
      return (random_int,);
  }
+
+   @external
+ func set_seed{
+     syscall_ptr, bitwise_ptr, pedersen_ptr, range_check_ptr
+ }(seed: felt) -> (success: felt) {
+     current_seed = seed;
+     return (1,);  // Success
+  }
