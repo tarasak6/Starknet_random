@@ -1,0 +1,26 @@
+%lang starknet
+
+from starkware.cairo.common.math import assert_le, unsigned_div_rem
+from starkware.cairo.common.registers import get_label_location
+
+const A: felt = 6364136223846793005;  // Multiplier
+const C: felt = 1;  // Increment
+const M: felt = 2**64;  // Modulus
+const INITIAL_SEED: felt = 42;
+
+@storage_var
+var current_seed: felt = INITIAL_SEED;
+
+@external
+func next_random{
+    syscall_ptr, range_check_ptr
+}(unused_ptr: felt*) -> (random_number: felt) {
+    alloc_locals;
+    let seed = current_seed;
+    
+    // Generate the next random number using LCG.
+    let (new_seed) = (A * seed + C) % M;
+    current_seed = new_seed;
+
+    return (new_seed,);
+}
