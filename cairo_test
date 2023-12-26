@@ -72,3 +72,21 @@ func xorshift32() -> (random: felt) {
   }() -> (seed: felt) {
      return (current_seed,);
   } 
+
+  @external
+ func shuffle_array{
+     syscall_ptr, bitwise_ptr, pedersen_ptr, range_check_ptr
+ }(arr: felt*) -> (shuffled: felt*) {
+     alloc_locals;
+
+     // Fisher-Yates shuffle algorithm.
+     let array_length = arr[0];
+     for i in [array_length - 1, 0..0] {
+         let j = (i + 1) % (array_length - 1);
+         let temp = arr[i + 1];
+         arr[i + 1] = arr[j + 1];
+         arr[j + 1] = temp;
+     }
+
+     return (arr,);
+   }
