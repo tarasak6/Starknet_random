@@ -64,3 +64,20 @@ func reset_seed_to_initial{
     current_seed = INITIAL_SEED;
     return (1,);  // Success
 }
+
+@external
+func random_boolean{
+    syscall_ptr, range_check_ptr
+}() -> (result: felt) {
+    alloc_locals;
+    let seed = current_seed;
+    
+    // Generate the next random number using LCG.
+    let (new_seed) = (A * seed + C) % M;
+    current_seed = new_seed;
+
+    // Map the random number to a boolean value.
+    let is_true = new_seed % 2;
+    
+    return (is_true,);
+}
