@@ -25,7 +25,6 @@ func next_random{
     return (new_seed,);
 }
 
-
 @external
 func random_range{
     syscall_ptr, range_check_ptr
@@ -43,7 +42,6 @@ func random_range{
     return (scaled_random,);
 }
 
-
 @external
 func set_initial_seed{
     syscall_ptr, range_check_ptr
@@ -51,9 +49,18 @@ func set_initial_seed{
     current_seed = seed;
     return (1,);  // Success
 }
+
 @external
 func get_current_seed{
     syscall_ptr, range_check_ptr
 }() -> (seed: felt) {
     return (current_seed,);
+}
+
+@external
+func reset_seed_to_initial{
+    syscall_ptr, range_check_ptr
+}() -> (success: felt) {
+    current_seed = INITIAL_SEED;
+    return (1,);  // Success
 }
