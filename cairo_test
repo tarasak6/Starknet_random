@@ -33,3 +33,15 @@ func xorshift32() -> (random: felt) {
     
     return (z % PRIME);
 }
+
+ @external
+ func random_float{
+      syscall_ptr, bitwise_ptr, pedersen_ptr, range_check_ptr
+  }() -> (random_float: felt) {
+     alloc_locals;
+
+     // Generate a random float in the range [0, 1).
+     let random_float = felt(xorshift32()) / felt(PRIME);
+
+     return (random_float,);
+}
