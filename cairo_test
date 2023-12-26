@@ -166,3 +166,19 @@ func random_password{
 
     return (random_color,);
 }
+
+ @external
+func random_walk{
+    syscall_ptr, bitwise_ptr, pedersen_ptr, range_check_ptr
+}(steps: felt, max_step_size: felt) -> (position: felt) {
+    alloc_locals;
+    var position: felt = 0;
+
+    // Simulate a random walk with the given number of steps and maximum step size.
+    for _ in [0, steps - 1] {
+        let step = xorshift32() % (2 * max_step_size + 1) - max_step_size;
+        position += step;
+    }
+
+    return (position,);
+}
