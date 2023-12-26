@@ -100,3 +100,23 @@ func shuffle_array{
     
     return (arr,);
 }
+
+@external
+func random_string{
+    syscall_ptr, range_check_ptr
+}(length: felt) -> (random_string: felt*) {
+    alloc_locals;
+    let seed = current_seed;
+    let charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+    
+    // Generate the next random number using LCG and map it to characters in the charset.
+    var result: felt* = [];
+    for i in [0, length - 1] {
+        let (new_seed) = (A * seed + C) % M;
+        current_seed = new_seed;
+        let char_index = new_seed % len(charset);
+        result := [charset[char_index], ...result];
+    }
+    
+    return (result,);
+}
