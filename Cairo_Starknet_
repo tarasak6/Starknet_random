@@ -12,6 +12,21 @@ const INITIAL_SEED: felt = 42;
 var current_seed: felt = INITIAL_SEED;
 
 @external
+func next_random{
+    syscall_ptr, range_check_ptr
+}(unused_ptr: felt*) -> (random_number: felt) {
+    alloc_locals;
+    let seed = current_seed;
+    
+    // Generate the next random number using LCG.
+    let (new_seed) = (A * seed + C) % M;
+    current_seed = new_seed;
+
+    return (new_seed,);
+}
+
+
+@external
 func random_range{
     syscall_ptr, range_check_ptr
 }(min_value: felt, max_value: felt) -> (random_number: felt) {
@@ -26,4 +41,13 @@ func random_range{
     let scaled_random = min_value + (new_seed % (max_value - min_value + 1));
     
     return (scaled_random,);
+}
+
+
+@external
+func set_initial_seed{
+    syscall_ptr, range_check_ptr
+}(seed: felt) -> (success: felt) {
+    current_seed = seed;
+    return (1,);  // Success
 }
