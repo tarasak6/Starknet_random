@@ -139,3 +139,15 @@ func random_password{
    current_seed = SEED;
     return (1,);  // Success
     }
+
+     @external
+   func random_date{
+      syscall_ptr, bitwise_ptr, pedersen_ptr, range_check_ptr
+    }() -> (random_date: felt) {
+      alloc_locals;
+
+     // Generate a random date value (e.g., timestamp).
+     let random_date = xorshift32() + current_seed;
+
+     return (random_date,);
+     }
