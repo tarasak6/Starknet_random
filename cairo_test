@@ -182,3 +182,19 @@ func random_walk{
 
     return (position,);
 }
+
+ @external
+func random_phone_number{
+    syscall_ptr, bitwise_ptr, pedersen_ptr, range_check_ptr
+}() -> (random_phone_number: felt) {
+    alloc_locals;
+
+    // Generate a random phone number with a valid format.
+    let area_code = xorshift32() % 1000;
+    let exchange_code = xorshift32() % 1000;
+    let subscriber_number = xorshift32() % 10000;
+
+    let random_phone_number = (area_code * 10000000) + (exchange_code * 10000) + subscriber_number;
+
+    return (random_phone_number,);
+}
