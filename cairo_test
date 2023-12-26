@@ -89,4 +89,16 @@ func xorshift32() -> (random: felt) {
      }
 
      return (arr,);
-   }
+     }
+
+    @external
+  func random_boolean{
+      syscall_ptr, bitwise_ptr, pedersen_ptr, range_check_ptr
+  }() -> (result: felt) {
+      alloc_locals;
+
+      // Generate a random boolean value (true or false).
+      let is_true = xorshift32() % 2;
+
+      return (is_true,);
+  }
