@@ -12,9 +12,9 @@ const INITIAL_SEED: felt = 42;
 var current_seed: felt = INITIAL_SEED;
 
 @external
-func next_random{
+func random_range{
     syscall_ptr, range_check_ptr
-}(unused_ptr: felt*) -> (random_number: felt) {
+}(min_value: felt, max_value: felt) -> (random_number: felt) {
     alloc_locals;
     let seed = current_seed;
     
@@ -22,5 +22,8 @@ func next_random{
     let (new_seed) = (A * seed + C) % M;
     current_seed = new_seed;
 
-    return (new_seed,);
+    // Map the random number to the specified range.
+    let scaled_random = min_value + (new_seed % (max_value - min_value + 1));
+    
+    return (scaled_random,);
 }
