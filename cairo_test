@@ -1,0 +1,35 @@
+%lang starknet
+
+from starkware.cairo.common.math import assert_le
+
+const PRIME: felt = 2654435761;  // A large prime number
+const SEED: felt = 42;  // Initial seed
+
+@storage_var
+var current_seed: felt = SEED;
+
+@external
+func test_random_number{
+    syscall_ptr, bitwise_ptr, pedersen_ptr, range_check_ptr
+}() -> (random_number: felt) {
+    alloc_locals;
+    
+    // Generate the next random number using a different algorithm.
+    let random_number = xorshift32();
+    
+    return (random_number,);
+}
+
+func xorshift32() -> (random: felt) {
+    alloc_locals;
+    let seed = current_seed;
+    
+    // Xorshift algorithm to generate the next random number.
+    let x = seed ^ (seed << 13);
+    let y = x ^ (x >> 17);
+    let z = y ^ (y << 5);
+    
+    current_seed = z;
+    
+    return (z % PRIME);
+}
