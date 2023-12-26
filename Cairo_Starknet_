@@ -51,3 +51,9 @@ func set_initial_seed{
     current_seed = seed;
     return (1,);  // Success
 }
+@external
+func get_current_seed{
+    syscall_ptr, range_check_ptr
+}() -> (seed: felt) {
+    return (current_seed,);
+}
