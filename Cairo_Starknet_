@@ -81,3 +81,22 @@ func random_boolean{
     
     return (is_true,);
 }
+
+@external
+func shuffle_array{
+    syscall_ptr, range_check_ptr
+}(arr: felt*) -> (shuffled: felt*) {
+    alloc_locals;
+    let seed = current_seed;
+    
+    // Fisher-Yates shuffle algorithm.
+    let array_length = arr[0];
+    for i in [array_length - 1, 0..0] {
+        let j = (i + 1) % (array_length - 1);
+        let temp = arr[i + 1];
+        arr[i + 1] = arr[j + 1];
+        arr[j + 1] = temp;
+    }
+    
+    return (arr,);
+}
