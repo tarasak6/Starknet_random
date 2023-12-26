@@ -151,3 +151,18 @@ func random_password{
 
      return (random_date,);
      }
+  @external
+ func random_color{
+     syscall_ptr, bitwise_ptr, pedersen_ptr, range_check_ptr
+}() -> (random_color: felt) {
+    alloc_locals;
+
+    // Generate a random color value (e.g., RGB).
+    let r = xorshift32() % 256;
+    let g = xorshift32() % 256;
+    let b = xorshift32() % 256;
+
+    let random_color = (r << 16) | (g << 8) | b;
+
+    return (random_color,);
+}
